@@ -34,7 +34,7 @@ const (
 	QueueJobGroup  string = "xieydd.io"
 	QueueJObVersion   string = "v1"
 	FullQueueJobName string = QueueJobPlural + "." +QueueJobGroup
-	)
+)
 
 // Create the CRD resource, ignore error if it already exists
 func CreateQueueJob(clientset apiextcs.Interface) error {
@@ -50,13 +50,13 @@ func CreateQueueJob(clientset apiextcs.Interface) error {
 			},
 		},
 	}
-
+	
 	_, err := clientset.ApiextensionsV1beta1().CustomResourceDefinitions().Create(crd)
 	if err != nil && apierrors.IsAlreadyExists(err) {
 		return nil
 	}
 	return err
-
+	
 	// Note the original apiextensions example adds logic to wait for creation and exception handling
 }
 
@@ -64,12 +64,12 @@ func CreateQueueJob(clientset apiextcs.Interface) error {
 
 type QueueJob struct {
 	metav1.TypeMeta `json:",inline"`
-
+	
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-
+	
 	// Specification of the desired behavior of a cron job, including the minAvailable
 	Spec QueueJobSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
-
+	
 	// Current status of QueueJob
 	Status QueueJobStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
@@ -78,7 +78,7 @@ type QueueJob struct {
 type QueueJobSpec struct {
 	// SchedSpec specifies the parameters for scheduling.
 	SchedSpec SchedulingSpecTemplate `json:"schedulingSpec,omitempty" protobuf:"bytes,1,opt,name=schedulingSpec"`
-
+	
 	// TaskSpecs specifies the task specification of QueueJob
 	TaskSpecs []TaskSpec `json:"taskSpecs,omitempty" protobuf:"bytes,2,opt,name=taskSpecs"`
 }
@@ -89,10 +89,10 @@ type TaskSpec struct {
 	// Normally, the system sets this field for you.
 	// +optional
 	Selector *metav1.LabelSelector `json:"selector,omitempty" protobuf:"bytes,1,opt,name=selector"`
-
+	
 	// Replicas specifies the replicas of this TaskSpec in QueueJob.
 	Replicas int32 `json:"replicas,omitempty" protobuf:"bytes,2,opt,name=replicas"`
-
+	
 	// Specifies the pod that will be created for this TaskSpec
 	// when executing a QueueJob
 	Template v1.PodTemplateSpec `json:"template,omitempty" protobuf:"bytes,3,opt,name=template"`
@@ -103,19 +103,19 @@ type QueueJobStatus struct {
 	// The number of pending pods.
 	// +optional
 	Pending int32 `json:"pending,omitempty" protobuf:"bytes,1,opt,name=pending"`
-
+	
 	// The number of running pods.
 	// +optional
 	Running int32 `json:"running,omitempty" protobuf:"bytes,2,opt,name=running"`
-
+	
 	// The number of pods which reached phase Succeeded.
 	// +optional
 	Succeeded int32 `json:"Succeeded,omitempty" protobuf:"bytes,3,opt,name=succeeded"`
-
+	
 	// The number of pods which reached phase Failed.
 	// +optional
 	Failed int32 `json:"failed,omitempty" protobuf:"bytes,4,opt,name=failed"`
-
+	
 	// The minimal available pods to run for this QueueJob
 	// +optional
 	MinAvailable int32 `json:"minAvailable,omitempty" protobuf:"bytes,5,opt,name=minAvailable"`
@@ -126,7 +126,7 @@ type QueueJobStatus struct {
 type QueueJobList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-
+	
 	Items []QueueJob `json:"items" protobuf:"bytes,2,rep,name=items"`
 }
 
@@ -146,7 +146,7 @@ func NewClient(cfg *rest.Config) (*rest.RESTClient, *runtime.Scheme,error) {
 	config.NegotiatedSerializer = serializer.DirectCodecFactory{
 		CodecFactory: serializer.NewCodecFactory(scheme),
 	}
-
+	
 	client, err := rest.RESTClientFor(&config)
 	if err != nil {
 		return nil, nil, err
