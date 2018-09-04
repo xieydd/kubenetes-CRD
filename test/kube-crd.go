@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	restClient "k8s.io/client-go/rest"
-	"github.com/k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/tools/clientcmd"
 	"github.com/xieydd/kubenetes-crd/client"
 	apiextcs "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"github.com/xieydd/kubenetes-crd/pkg/apis/v1alpha"
